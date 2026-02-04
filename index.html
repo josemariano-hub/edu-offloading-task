@@ -1,0 +1,1772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edu Offloading Task</title>
+    <!-- Google Fonts - Rajdhani -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #22c55e;
+            --primary-hover: #16a34a;
+            --bg: #000000;
+            --card-bg: #111111;
+            --text: #ffffff;
+            --text-muted: #a1a1aa;
+            --border: #333333;
+            --yes: #22c55e;
+            --no: #ef4444;
+            --info: #f59e0b;
+        }
+
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 750px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border);
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 8px;
+            color: var(--primary);
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .intro {
+            color: var(--text-muted);
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+        }
+
+        /* Topic Card */
+        .topic {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+
+        .topic h3 {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        /* Radio Options */
+        .options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .radio-label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            padding: 8px 14px;
+            border: 2px solid var(--border);
+            border-radius: 25px;
+            transition: all 0.2s ease;
+            font-size: 1rem;
+            user-select: none;
+            color: var(--text);
+            font-weight: 500;
+        }
+
+        .radio-label:hover {
+            border-color: var(--primary);
+            background: rgba(34, 197, 94, 0.1);
+        }
+
+        .radio-label input[type="radio"] {
+            display: none;
+        }
+
+        .radio-custom {
+            width: 16px;
+            height: 16px;
+            border: 2px solid var(--border);
+            border-radius: 50%;
+            position: relative;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .radio-label input[type="radio"]:checked + .radio-custom {
+            border-color: var(--primary);
+            background: var(--primary);
+        }
+
+        .radio-label input[type="radio"]:checked + .radio-custom::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 5px;
+            height: 5px;
+            background: black;
+            border-radius: 50%;
+        }
+
+        .radio-label:has(input:checked) {
+            border-color: var(--primary);
+            background: rgba(34, 197, 94, 0.15);
+        }
+
+        .radio-label.yes-option:has(input:checked) {
+            border-color: var(--yes);
+            background: rgba(34, 197, 94, 0.15);
+        }
+        .radio-label.yes-option:has(input:checked) .radio-custom {
+            border-color: var(--yes);
+            background: var(--yes);
+        }
+
+        .radio-label.no-option:has(input:checked) {
+            border-color: var(--no);
+            background: rgba(239, 68, 68, 0.15);
+        }
+        .radio-label.no-option:has(input:checked) .radio-custom {
+            border-color: var(--no);
+            background: var(--no);
+        }
+
+        .radio-label.info-option:has(input:checked) {
+            border-color: var(--info);
+            background: rgba(245, 158, 11, 0.15);
+        }
+        .radio-label.info-option:has(input:checked) .radio-custom {
+            border-color: var(--info);
+            background: var(--info);
+        }
+
+        /* Details/Summary - Know More */
+        .know-more {
+            margin-top: 8px;
+        }
+
+        .know-more summary {
+            cursor: pointer;
+            color: var(--primary);
+            font-size: 0.95rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 0;
+            list-style: none;
+        }
+
+        .know-more summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .know-more summary::before {
+            content: '▶';
+            font-size: 0.65rem;
+            transition: transform 0.2s ease;
+        }
+
+        .know-more[open] summary::before {
+            transform: rotate(90deg);
+        }
+
+        .details-content {
+            margin-top: 10px;
+            padding: 15px;
+            background: var(--card-bg);
+            border-left: 3px solid var(--primary);
+            border-radius: 0 8px 8px 0;
+            font-size: 1rem;
+            color: var(--text-muted);
+            line-height: 1.7;
+        }
+
+        .details-content ul {
+            margin: 8px 0 0 20px;
+        }
+
+        .details-content li {
+            margin-bottom: 4px;
+        }
+
+        .details-content strong {
+            color: var(--primary);
+        }
+
+        /* Email & Name Inputs */
+        .input-group {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            color: var(--text);
+        }
+
+        .input-group input,
+        .input-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.2s ease;
+            background: var(--card-bg);
+            color: var(--text);
+            font-family: 'Rajdhani', sans-serif;
+        }
+
+        .input-group input:focus,
+        .input-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .input-group input::placeholder,
+        .input-group textarea::placeholder {
+            color: var(--text-muted);
+        }
+
+        /* Submit Button */
+        .submit-btn {
+            width: 100%;
+            padding: 15px 30px;
+            background: var(--primary);
+            color: black;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            margin-top: 10px;
+            font-family: 'Rajdhani', sans-serif;
+            letter-spacing: 0.5px;
+        }
+
+        .submit-btn:hover {
+            background: var(--primary-hover);
+        }
+
+        /* Honeypot hidden field */
+        .hidden {
+            display: none;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+
+            .options {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .radio-label {
+                justify-content: flex-start;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Edu Offloading Task</h1>
+        <p class="intro">Please select "Yes" for the tasks where you want to contribute, either because you feel you can add more value or because you want to learn while doing. Click "Know more" to see additional details on each task. Thanks!</p>
+
+        <form name="edu-offloading-task" method="POST" data-netlify="true" data-netlify-honeypot="bot-field">
+            <!-- Hidden honeypot field for spam protection -->
+            <p class="hidden">
+                <label>Don't fill this out: <input name="bot-field" /></label>
+            </p>
+
+            <!-- Topic 1: Windows -->
+            <div class="topic">
+                <h3>1. Windows</h3>
+                <div class="options">
+                    <label class="radio-label yes-option">
+                        <input type="radio" name="windows" value="yes" required>
+                        <span class="radio-custom"></span>
+                        Yes
+                    </label>
+                    <label class="radio-label no-option">
+                        <input type="radio" name="windows" value="no">
+                        <span class="radio-custom"></span>
+                        No
+                    </label>
+                    <label class="radio-label info-option">
+                        <input type="radio" name="windows" value="need-more-info">
+                        <span class="radio-custom"></span>
+                        Need more info
+                    </label>
+                </div>
+                <details class="know-more">
+                    <summary>Know more</summary>
+                    <div class="details-content">
+                        <p>Window system specifications include:</p>
+                        <ul>
+                            <li><strong>Panes:</strong> Multi-layer construction for pressure and thermal performance</li>
+                            <li><strong>Coating:</strong> Specialized coatings for UV protection and visibility</li>
+                            <li><strong>Mechanism:</strong> Opening/closing system design</li>
+                            <li><strong>Gaskets:</strong> Sealing elements for pressure integrity</li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Topic 2: Hemispherical Hatch -->
+            <div class="topic">
+                <h3>2. Hemispherical Hatch</h3>
+                <div class="options">
+                    <label class="radio-label yes-option">
+                        <input type="radio" name="hatch" value="yes" required>
+                        <span class="radio-custom"></span>
+                        Yes
+                    </label>
+                    <label class="radio-label no-option">
+                        <input type="radio" name="hatch" value="no">
+                        <span class="radio-custom"></span>
+                        No
+                    </label>
+                    <label class="radio-label info-option">
+                        <input type="radio" name="hatch" value="need-more-info">
+                        <span class="radio-custom"></span>
+                        Need more info
+                    </label>
+                </div>
+                <details class="know-more">
+                    <summary>Know more</summary>
+                    <div class="details-content">
+                        <p>Hemispherical hatch design considerations:</p>
+                        <ul>
+                            <li><strong>Opens to the inside:</strong> Inward-opening design for pressure seal integrity</li>
+                            <li><strong>Mechanism:</strong> Hinge and locking system specifications</li>
+                            <li><strong>Safety:</strong> Emergency release and redundancy features</li>
+                            <li><strong>Gaskets:</strong> Pressure-rated sealing system</li>
+                            <li><strong>Ergonomy:</strong> Ease of operation for crew members</li>
+                            <li><strong>Marine angle:</strong> Orientation considerations for sea operations</li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Topic 3: Airbags -->
+            <div class="topic">
+                <h3>3. Airbags</h3>
+                <div class="options">
+                    <label class="radio-label yes-option">
+                        <input type="radio" name="airbags" value="yes" required>
+                        <span class="radio-custom"></span>
+                        Yes
+                    </label>
+                    <label class="radio-label no-option">
+                        <input type="radio" name="airbags" value="no">
+                        <span class="radio-custom"></span>
+                        No
+                    </label>
+                    <label class="radio-label info-option">
+                        <input type="radio" name="airbags" value="need-more-info">
+                        <span class="radio-custom"></span>
+                        Need more info
+                    </label>
+                </div>
+                <details class="know-more">
+                    <summary>Know more</summary>
+                    <div class="details-content">
+                        <p>Airbag system specifications:</p>
+                        <ul>
+                            <li><strong>Toroidal outside:</strong> External toroidal (donut-shaped) airbag configuration</li>
+                            <li><strong>2 modes:</strong> Dual-mode operation for different landing scenarios</li>
+                            <li><strong>Low pressure sea:</strong> Low-pressure inflation mode optimized for water landing</li>
+                            <li><strong>High pressure vented land:</strong> High-pressure vented mode for land impact absorption</li>
+                            <li><strong>Inflatable partners:</strong> Coordination with other inflatable systems</li>
+                            <li><strong>Ultramagic:</strong> Potential partnership with Ultramagic (balloon/inflatable manufacturer) under consideration</li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Topic 4: Crushable Cone-Keel -->
+            <div class="topic">
+                <h3>4. Crushable Cone-Keel</h3>
+                <div class="options">
+                    <label class="radio-label yes-option">
+                        <input type="radio" name="cone-keel" value="yes" required>
+                        <span class="radio-custom"></span>
+                        Yes
+                    </label>
+                    <label class="radio-label no-option">
+                        <input type="radio" name="cone-keel" value="no">
+                        <span class="radio-custom"></span>
+                        No
+                    </label>
+                    <label class="radio-label info-option">
+                        <input type="radio" name="cone-keel" value="need-more-info">
+                        <span class="radio-custom"></span>
+                        Need more info
+                    </label>
+                </div>
+                <details class="know-more">
+                    <summary>Know more</summary>
+                    <div class="details-content">
+                        <p>Crushable cone-keel energy absorption system:</p>
+                        <ul>
+                            <li><strong>Open cell construction:</strong> Open-cell foam structure for progressive crushing</li>
+                            <li><strong>Material options:</strong> Plastic or aluminum foam under evaluation</li>
+                            <li><strong>Disposable:</strong> Single-use design, replaced after each landing</li>
+                            <li><strong>Keel function:</strong> Also serves as keel for sea entry stability and orientation</li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Topic 5: Batteries -->
+            <div class="topic">
+                <h3>5. Batteries</h3>
+                <div class="options">
+                    <label class="radio-label yes-option">
+                        <input type="radio" name="batteries" value="yes" required>
+                        <span class="radio-custom"></span>
+                        Yes
+                    </label>
+                    <label class="radio-label no-option">
+                        <input type="radio" name="batteries" value="no">
+                        <span class="radio-custom"></span>
+                        No
+                    </label>
+                    <label class="radio-label info-option">
+                        <input type="radio" name="batteries" value="need-more-info">
+                        <span class="radio-custom"></span>
+                        Need more info
+                    </label>
+                </div>
+                <details class="know-more">
+                    <summary>Know more</summary>
+                    <div class="details-content">
+                        <p>Battery system configuration:</p>
+                        <ul>
+                            <li><strong>SAFT aviation:</strong> Option for SAFT aviation-grade batteries (high reliability)</li>
+                            <li><strong>Alternative:</strong> More basic battery options also under consideration</li>
+                            <li><strong>External hosting:</strong> Batteries located outside the pressure vessel</li>
+                            <li><strong>Umbilicals:</strong> Power transferred through umbilical connections</li>
+                            <li><strong>Safety box inside:</strong> Internal safety enclosure for battery management electronics</li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Topic 6: Avionics -->
+            <div class="topic">
+                <h3>6. Avionics</h3>
+                <div class="options">
+                    <label class="radio-label yes-option">
+                        <input type="radio" name="avionics" value="yes" required>
+                        <span class="radio-custom"></span>
+                        Yes
+                    </label>
+                    <label class="radio-label no-option">
+                        <input type="radio" name="avionics" value="no">
+                        <span class="radio-custom"></span>
+                        No
+                    </label>
+                    <label class="radio-label info-option">
+                        <input type="radio" name="avionics" value="need-more-info">
+                        <span class="radio-custom"></span>
+                        Need more info
+                    </label>
+                </div>
+                <details class="know-more">
+                    <summary>Know more</summary>
+                    <div class="details-content">
+                        <p>Avionics system architecture:</p>
+                        <ul>
+                            <li><strong>2-tier approach:</strong> Two levels of avionics complexity</li>
+                            <li><strong>Uncrewed flight set:</strong> Base avionics required for autonomous/uncrewed missions</li>
+                            <li><strong>Crewed flight extras:</strong> Additional systems for human-rated flights</li>
+                            <li><strong>Modular cockpit:</strong> Cockpit module designed to attach to seat assembly</li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Topic 7: Seats -->
+            <div class="topic">
+                <h3>7. Seats</h3>
+                <div class="options">
+                    <label class="radio-label yes-option">
+                        <input type="radio" name="seats" value="yes" required>
+                        <span class="radio-custom"></span>
+                        Yes
+                    </label>
+                    <label class="radio-label no-option">
+                        <input type="radio" name="seats" value="no">
+                        <span class="radio-custom"></span>
+                        No
+                    </label>
+                    <label class="radio-label info-option">
+                        <input type="radio" name="seats" value="need-more-info">
+                        <span class="radio-custom"></span>
+                        Need more info
+                    </label>
+                </div>
+                <details class="know-more">
+                    <summary>Know more</summary>
+                    <div class="details-content">
+                        <p>Seat system options and mounting:</p>
+                        <ul>
+                            <li><strong>Helicopter seats:</strong> Aviation-grade helicopter seat designs</li>
+                            <li><strong>Racing seats:</strong> High-performance racing seat options</li>
+                            <li><strong>Energy absorbing:</strong> Impact attenuation features built-in</li>
+                            <li><strong>Mounting options:</strong> Roof, floor, or back column mounting configurations under evaluation</li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Topic 8: Ropes and Slings -->
+            <div class="topic">
+                <h3>8. Ropes and Slings</h3>
+                <div class="options">
+                    <label class="radio-label yes-option">
+                        <input type="radio" name="ropes-slings" value="yes" required>
+                        <span class="radio-custom"></span>
+                        Yes
+                    </label>
+                    <label class="radio-label no-option">
+                        <input type="radio" name="ropes-slings" value="no">
+                        <span class="radio-custom"></span>
+                        No
+                    </label>
+                    <label class="radio-label info-option">
+                        <input type="radio" name="ropes-slings" value="need-more-info">
+                        <span class="radio-custom"></span>
+                        Need more info
+                    </label>
+                </div>
+                <details class="know-more">
+                    <summary>Know more</summary>
+                    <div class="details-content">
+                        <p>Suspension and rigging system:</p>
+                        <ul>
+                            <li><strong>Dyneema material:</strong> Ultra-high-molecular-weight polyethylene (UHMWPE) ropes and slings</li>
+                            <li>Excellent strength-to-weight ratio</li>
+                            <li>High abrasion resistance</li>
+                            <li>Low stretch characteristics</li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Topic 9: Interior Furnishing -->
+            <div class="topic">
+                <h3>9. Interior Furnishing</h3>
+                <div class="options">
+                    <label class="radio-label yes-option">
+                        <input type="radio" name="interior" value="yes" required>
+                        <span class="radio-custom"></span>
+                        Yes
+                    </label>
+                    <label class="radio-label no-option">
+                        <input type="radio" name="interior" value="no">
+                        <span class="radio-custom"></span>
+                        No
+                    </label>
+                    <label class="radio-label info-option">
+                        <input type="radio" name="interior" value="need-more-info">
+                        <span class="radio-custom"></span>
+                        Need more info
+                    </label>
+                </div>
+                <details class="know-more">
+                    <summary>Know more</summary>
+                    <div class="details-content">
+                        <p>Interior panel and finishing specifications:</p>
+                        <ul>
+                            <li><strong>Panels:</strong> Interior panel system for equipment mounting and aesthetics</li>
+                            <li><strong>Fire proof:</strong> All materials meet fire resistance requirements</li>
+                            <li><strong>Matte black finish:</strong> Non-reflective surface treatment</li>
+                            <li><strong>Eye adaptation:</strong> Dark interior aids crew eye adaptation for external viewing</li>
+                            <li><strong>Reflection removal:</strong> Eliminates internal reflections on windows</li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Topic 10: Suits -->
+            <div class="topic">
+                <h3>10. Suits</h3>
+                <div class="options">
+                    <label class="radio-label yes-option">
+                        <input type="radio" name="suits" value="yes" required>
+                        <span class="radio-custom"></span>
+                        Yes
+                    </label>
+                    <label class="radio-label no-option">
+                        <input type="radio" name="suits" value="no">
+                        <span class="radio-custom"></span>
+                        No
+                    </label>
+                    <label class="radio-label info-option">
+                        <input type="radio" name="suits" value="need-more-info">
+                        <span class="radio-custom"></span>
+                        Need more info
+                    </label>
+                </div>
+                <details class="know-more">
+                    <summary>Know more</summary>
+                    <div class="details-content">
+                        <p>Pressure suit options and procurement:</p>
+                        <ul>
+                            <li><strong>Pricing models:</strong> One-off custom suits vs. bulk pricing for multiple units</li>
+                            <li><strong>SOLO suits:</strong> Higher-end option with advanced features</li>
+                            <li><strong>Spartan suits:</strong> More economical alternative under consideration</li>
+                            <li><strong>Connectors:</strong> Standardized connection interfaces for life support</li>
+                            <li><strong>EVA options:</strong> Extravehicular activity capability considerations</li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Topic 11: Test Sites -->
+            <div class="topic">
+                <h3>11. Test Sites</h3>
+                <div class="options">
+                    <label class="radio-label yes-option">
+                        <input type="radio" name="test-sites" value="yes" required>
+                        <span class="radio-custom"></span>
+                        Yes
+                    </label>
+                    <label class="radio-label no-option">
+                        <input type="radio" name="test-sites" value="no">
+                        <span class="radio-custom"></span>
+                        No
+                    </label>
+                    <label class="radio-label info-option">
+                        <input type="radio" name="test-sites" value="need-more-info">
+                        <span class="radio-custom"></span>
+                        Need more info
+                    </label>
+                </div>
+                <details class="know-more">
+                    <summary>Know more</summary>
+                    <div class="details-content">
+                        <p>Testing infrastructure requirements:</p>
+                        <ul>
+                            <li><strong>Suit testing:</strong> Facilities for pressure suit validation and crew training</li>
+                            <li><strong>Capsule testing:</strong> Full-scale capsule test environment</li>
+                            <li><strong>Subsystems testing:</strong> Component-level test facilities for individual systems</li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Topic 12: Full Size Mockup -->
+            <div class="topic">
+                <h3>12. Full Size Mockup</h3>
+                <div class="options">
+                    <label class="radio-label yes-option">
+                        <input type="radio" name="mockup" value="yes" required>
+                        <span class="radio-custom"></span>
+                        Yes
+                    </label>
+                    <label class="radio-label no-option">
+                        <input type="radio" name="mockup" value="no">
+                        <span class="radio-custom"></span>
+                        No
+                    </label>
+                    <label class="radio-label info-option">
+                        <input type="radio" name="mockup" value="need-more-info">
+                        <span class="radio-custom"></span>
+                        Need more info
+                    </label>
+                </div>
+                <details class="know-more">
+                    <summary>Know more</summary>
+                    <div class="details-content">
+                        <p>Full-scale physical mockup for development:</p>
+                        <ul>
+                            <li><strong>Ergonomy validation:</strong> Human factors testing and crew interface optimization</li>
+                            <li><strong>Design validation:</strong> Physical verification of dimensions and accessibility</li>
+                            <li>Essential for identifying integration issues before flight hardware</li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Topic 13: Supply Chain - Balloons -->
+            <div class="topic">
+                <h3>13. Supply Chain: Balloons</h3>
+                <div class="options">
+                    <label class="radio-label yes-option">
+                        <input type="radio" name="balloons" value="yes" required>
+                        <span class="radio-custom"></span>
+                        Yes
+                    </label>
+                    <label class="radio-label no-option">
+                        <input type="radio" name="balloons" value="no">
+                        <span class="radio-custom"></span>
+                        No
+                    </label>
+                    <label class="radio-label info-option">
+                        <input type="radio" name="balloons" value="need-more-info">
+                        <span class="radio-custom"></span>
+                        Need more info
+                    </label>
+                </div>
+                <details class="know-more">
+                    <summary>Know more</summary>
+                    <div class="details-content">
+                        <p>Balloon procurement strategy:</p>
+                        <ul>
+                            <li><strong>Volume requirement:</strong> We need a large quantity of 4 kg balloons</li>
+                            <li><strong>Limited production:</strong> Not many manufacturers produce this specific size</li>
+                            <li><strong>Bulk pricing negotiation:</strong> Key factor for overall profitability</li>
+                            <li>Securing reliable supply chain is critical for operations</li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Topic 14: Helium -->
+            <div class="topic">
+                <h3>14. Helium</h3>
+                <div class="options">
+                    <label class="radio-label yes-option">
+                        <input type="radio" name="helium" value="yes" required>
+                        <span class="radio-custom"></span>
+                        Yes
+                    </label>
+                    <label class="radio-label no-option">
+                        <input type="radio" name="helium" value="no">
+                        <span class="radio-custom"></span>
+                        No
+                    </label>
+                    <label class="radio-label info-option">
+                        <input type="radio" name="helium" value="need-more-info">
+                        <span class="radio-custom"></span>
+                        Need more info
+                    </label>
+                </div>
+                <details class="know-more">
+                    <summary>Know more</summary>
+                    <div class="details-content">
+                        <p>Helium supply strategy:</p>
+                        <ul>
+                            <li><strong>High volume needs:</strong> Operations will require significant helium quantities</li>
+                            <li><strong>New sources:</strong> New helium mines are being funded globally</li>
+                            <li><strong>Multi-supplier approach:</strong> Securing several suppliers at competitive pricing</li>
+                            <li><strong>Direct bottom line impact:</strong> Helium cost significantly affects profitability</li>
+                            <li><strong>True commodity:</strong> No quality differentiation - there is no "good" or "bad" helium</li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Topic 15: Supply Chain - Pyrotechnics -->
+            <div class="topic">
+                <h3>15. Supply Chain: Pyrotechnics</h3>
+                <div class="options">
+                    <label class="radio-label yes-option">
+                        <input type="radio" name="pyrotechnics" value="yes" required>
+                        <span class="radio-custom"></span>
+                        Yes
+                    </label>
+                    <label class="radio-label no-option">
+                        <input type="radio" name="pyrotechnics" value="no">
+                        <span class="radio-custom"></span>
+                        No
+                    </label>
+                    <label class="radio-label info-option">
+                        <input type="radio" name="pyrotechnics" value="need-more-info">
+                        <span class="radio-custom"></span>
+                        Need more info
+                    </label>
+                </div>
+                <details class="know-more">
+                    <summary>Know more</summary>
+                    <div class="details-content">
+                        <p>Pyrotechnic devices supply chain:</p>
+                        <ul>
+                            <li><strong>Critical function:</strong> Essential for separation events during flight</li>
+                            <li><strong>Mission critical:</strong> Reliability is paramount - no room for failure</li>
+                            <li><strong>Storage requirements:</strong> Special handling and storage conditions required</li>
+                            <li><strong>Transport regulations:</strong> Hazmat transport considerations</li>
+                            <li><strong>Price variance:</strong> Wide range between cheap and expensive options</li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Topic 16: Nets for Cluster -->
+            <div class="topic">
+                <h3>16. Nets for the Cluster</h3>
+                <div class="options">
+                    <label class="radio-label yes-option">
+                        <input type="radio" name="nets" value="yes" required>
+                        <span class="radio-custom"></span>
+                        Yes
+                    </label>
+                    <label class="radio-label no-option">
+                        <input type="radio" name="nets" value="no">
+                        <span class="radio-custom"></span>
+                        No
+                    </label>
+                    <label class="radio-label info-option">
+                        <input type="radio" name="nets" value="need-more-info">
+                        <span class="radio-custom"></span>
+                        Need more info
+                    </label>
+                </div>
+                <details class="know-more">
+                    <summary>Know more</summary>
+                    <div class="details-content">
+                        <p>Cluster balloon net system:</p>
+                        <ul>
+                            <li><strong>Suppliers:</strong> Identifying and qualifying net manufacturers</li>
+                            <li><strong>Patterns:</strong> Net geometry and mesh pattern optimization</li>
+                            <li><strong>Rigging:</strong> Attachment and load distribution system design</li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Topic 17: Cluster Scaled Down Operations -->
+            <div class="topic">
+                <h3>17. Cluster Scaled Down Operations</h3>
+                <div class="options">
+                    <label class="radio-label yes-option">
+                        <input type="radio" name="scaled-down" value="yes" required>
+                        <span class="radio-custom"></span>
+                        Yes
+                    </label>
+                    <label class="radio-label no-option">
+                        <input type="radio" name="scaled-down" value="no">
+                        <span class="radio-custom"></span>
+                        No
+                    </label>
+                    <label class="radio-label info-option">
+                        <input type="radio" name="scaled-down" value="need-more-info">
+                        <span class="radio-custom"></span>
+                        Need more info
+                    </label>
+                </div>
+                <details class="know-more">
+                    <summary>Know more</summary>
+                    <div class="details-content">
+                        <p>Small-scale cluster operations for concept validation:</p>
+                        <ul>
+                            <li><strong>Purpose:</strong> Prove cluster balloon concepts at reduced scale before full-size implementation</li>
+                            <li><strong>Risk reduction:</strong> Identify issues early with lower cost and complexity</li>
+                            <li><strong>Learning platform:</strong> Develop operational procedures and train teams</li>
+                            <li>Validate control systems, net configurations, and flight dynamics</li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Topic 18: Smart Valve -->
+            <div class="topic">
+                <h3>18. Smart Valve</h3>
+                <div class="options">
+                    <label class="radio-label yes-option">
+                        <input type="radio" name="smart-valve" value="yes" required>
+                        <span class="radio-custom"></span>
+                        Yes
+                    </label>
+                    <label class="radio-label no-option">
+                        <input type="radio" name="smart-valve" value="no">
+                        <span class="radio-custom"></span>
+                        No
+                    </label>
+                    <label class="radio-label info-option">
+                        <input type="radio" name="smart-valve" value="need-more-info">
+                        <span class="radio-custom"></span>
+                        Need more info
+                    </label>
+                </div>
+                <details class="know-more">
+                    <summary>Know more</summary>
+                    <div class="details-content">
+                        <p>Intelligent valve system for cluster balloon control:</p>
+                        <ul>
+                            <li><strong>Venting control:</strong> Automated gas release for altitude management</li>
+                            <li><strong>Heating control:</strong> Thermal management of individual balloon elements</li>
+                            <li><strong>Cluster management:</strong> Coordinate multiple balloon elements for flight control</li>
+                            <li><strong>Standalone project potential:</strong> Could be developed and managed as an independent supplier product</li>
+                            <li>Enables precise buoyancy control across the balloon cluster</li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Topic 19: 3D Printing Scaled Models -->
+            <div class="topic">
+                <h3>19. 3D Printing Scaled Models</h3>
+                <div class="options">
+                    <label class="radio-label yes-option">
+                        <input type="radio" name="3d-printing" value="yes" required>
+                        <span class="radio-custom"></span>
+                        Yes
+                    </label>
+                    <label class="radio-label no-option">
+                        <input type="radio" name="3d-printing" value="no">
+                        <span class="radio-custom"></span>
+                        No
+                    </label>
+                    <label class="radio-label info-option">
+                        <input type="radio" name="3d-printing" value="need-more-info">
+                        <span class="radio-custom"></span>
+                        Need more info
+                    </label>
+                </div>
+                <details class="know-more">
+                    <summary>Know more</summary>
+                    <div class="details-content">
+                        <p>Scaled 3D printed models for visualization (optional):</p>
+                        <ul>
+                            <li><strong>Components:</strong> Panels, windows, and other structural elements</li>
+                            <li><strong>Visualization aid:</strong> Helps team members understand spatial relationships</li>
+                            <li><strong>Design review:</strong> Physical models for design discussions and presentations</li>
+                            <li>Optional but valuable for communication and early-stage validation</li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Topic 20: Wind -->
+            <div class="topic">
+                <h3>20. Wind</h3>
+                <div class="options">
+                    <label class="radio-label yes-option">
+                        <input type="radio" name="wind" value="yes" required>
+                        <span class="radio-custom"></span>
+                        Yes
+                    </label>
+                    <label class="radio-label no-option">
+                        <input type="radio" name="wind" value="no">
+                        <span class="radio-custom"></span>
+                        No
+                    </label>
+                    <label class="radio-label info-option">
+                        <input type="radio" name="wind" value="need-more-info">
+                        <span class="radio-custom"></span>
+                        Need more info
+                    </label>
+                </div>
+                <details class="know-more">
+                    <summary>Know more</summary>
+                    <div class="details-content">
+                        <p>Wind analysis and meteorological operations:</p>
+                        <ul>
+                            <li><strong>Ground stations:</strong> Weather monitoring infrastructure setup</li>
+                            <li><strong>Meteorologist coordination:</strong> Working with weather experts for flight planning</li>
+                            <li><strong>Models:</strong> Atmospheric modeling and prediction systems</li>
+                            <li><strong>Maps:</strong> Wind pattern visualization and analysis tools</li>
+                            <li><strong>Trajectories:</strong> Flight path prediction and planning based on wind data</li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Topic 21: ECLSS -->
+            <div class="topic">
+                <h3>21. ECLSS (Environmental Control & Life Support)</h3>
+                <div class="options">
+                    <label class="radio-label yes-option">
+                        <input type="radio" name="eclss" value="yes" required>
+                        <span class="radio-custom"></span>
+                        Yes
+                    </label>
+                    <label class="radio-label no-option">
+                        <input type="radio" name="eclss" value="no">
+                        <span class="radio-custom"></span>
+                        No
+                    </label>
+                    <label class="radio-label info-option">
+                        <input type="radio" name="eclss" value="need-more-info">
+                        <span class="radio-custom"></span>
+                        Need more info
+                    </label>
+                </div>
+                <details class="know-more">
+                    <summary>Know more</summary>
+                    <div class="details-content">
+                        <p>Life support system design:</p>
+                        <ul>
+                            <li><strong>Sizing:</strong> System capacity calculations for crew and mission duration</li>
+                            <li><strong>Human physiology:</strong> Understanding crew metabolic and respiratory requirements</li>
+                            <li><strong>Lessons learnt:</strong> Applying knowledge from other human spaceflight programs</li>
+                            <li>Critical for crew safety and mission success</li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Topic 22: Thermal -->
+            <div class="topic">
+                <h3>22. Thermal</h3>
+                <div class="options">
+                    <label class="radio-label yes-option">
+                        <input type="radio" name="thermal" value="yes" required>
+                        <span class="radio-custom"></span>
+                        Yes
+                    </label>
+                    <label class="radio-label no-option">
+                        <input type="radio" name="thermal" value="no">
+                        <span class="radio-custom"></span>
+                        No
+                    </label>
+                    <label class="radio-label info-option">
+                        <input type="radio" name="thermal" value="need-more-info">
+                        <span class="radio-custom"></span>
+                        Need more info
+                    </label>
+                </div>
+                <details class="know-more">
+                    <summary>Know more</summary>
+                    <div class="details-content">
+                        <p>Thermal control system:</p>
+                        <ul>
+                            <li><strong>Trade-offs:</strong> Balancing passive vs active thermal control approaches</li>
+                            <li><strong>Sizing:</strong> Heat rejection and insulation capacity calculations</li>
+                            <li><strong>Failure mode monitoring:</strong> Sensors and alerts for thermal anomalies</li>
+                            <li>Maintaining safe temperature range throughout mission phases</li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Topic 23: Emergency Chute -->
+            <div class="topic">
+                <h3>23. Emergency Chute</h3>
+                <div class="options">
+                    <label class="radio-label yes-option">
+                        <input type="radio" name="emergency-chute" value="yes" required>
+                        <span class="radio-custom"></span>
+                        Yes
+                    </label>
+                    <label class="radio-label no-option">
+                        <input type="radio" name="emergency-chute" value="no">
+                        <span class="radio-custom"></span>
+                        No
+                    </label>
+                    <label class="radio-label info-option">
+                        <input type="radio" name="emergency-chute" value="need-more-info">
+                        <span class="radio-custom"></span>
+                        Need more info
+                    </label>
+                </div>
+                <details class="know-more">
+                    <summary>Know more</summary>
+                    <div class="details-content">
+                        <p>Ballistic Recovery System (BRS) parachute:</p>
+                        <ul>
+                            <li><strong>BRS:</strong> Ballistic Recovery System selection and integration</li>
+                            <li><strong>Tests:</strong> Deployment testing and qualification program</li>
+                            <li><strong>Pricing:</strong> Cost evaluation of different BRS options</li>
+                            <li><strong>Placing:</strong> Optimal mounting location and deployment geometry</li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Topic 24: Launch and Recovery Operations -->
+            <div class="topic">
+                <h3>24. Launch and Recovery Operations</h3>
+                <div class="options">
+                    <label class="radio-label yes-option">
+                        <input type="radio" name="launch-recovery" value="yes" required>
+                        <span class="radio-custom"></span>
+                        Yes
+                    </label>
+                    <label class="radio-label no-option">
+                        <input type="radio" name="launch-recovery" value="no">
+                        <span class="radio-custom"></span>
+                        No
+                    </label>
+                    <label class="radio-label info-option">
+                        <input type="radio" name="launch-recovery" value="need-more-info">
+                        <span class="radio-custom"></span>
+                        Need more info
+                    </label>
+                </div>
+                <details class="know-more">
+                    <summary>Know more</summary>
+                    <div class="details-content">
+                        <p>Ground operations equipment and procedures:</p>
+                        <ul>
+                            <li><strong>Helicopter:</strong> Aerial recovery and support operations</li>
+                            <li><strong>Boats:</strong> Water recovery vessels and procedures</li>
+                            <li><strong>Low-rise truck:</strong> Ground transport vehicle for capsule</li>
+                            <li><strong>Crane:</strong> Equipment to rotate capsule 90 degrees for processing</li>
+                            <li>Coordinating all assets for safe launch and recovery</li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Topic 25: Human Capital -->
+            <div class="topic">
+                <h3>25. Human Capital</h3>
+                <div class="options">
+                    <label class="radio-label yes-option">
+                        <input type="radio" name="human-capital" value="yes" required>
+                        <span class="radio-custom"></span>
+                        Yes
+                    </label>
+                    <label class="radio-label no-option">
+                        <input type="radio" name="human-capital" value="no">
+                        <span class="radio-custom"></span>
+                        No
+                    </label>
+                    <label class="radio-label info-option">
+                        <input type="radio" name="human-capital" value="need-more-info">
+                        <span class="radio-custom"></span>
+                        Need more info
+                    </label>
+                </div>
+                <details class="know-more">
+                    <summary>Know more</summary>
+                    <div class="details-content">
+                        <p>Talent acquisition and team building:</p>
+                        <ul>
+                            <li><strong>Finding geniuses:</strong> Identifying and recruiting exceptional talent</li>
+                            <li><strong>Further offloading:</strong> Building a team capable of taking on more responsibilities</li>
+                            <li>Selecting individuals who can scale with the company's growth</li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Topic 26: Insurance -->
+            <div class="topic">
+                <h3>26. Insurance</h3>
+                <div class="options">
+                    <label class="radio-label yes-option">
+                        <input type="radio" name="insurance" value="yes" required>
+                        <span class="radio-custom"></span>
+                        Yes
+                    </label>
+                    <label class="radio-label no-option">
+                        <input type="radio" name="insurance" value="no">
+                        <span class="radio-custom"></span>
+                        No
+                    </label>
+                    <label class="radio-label info-option">
+                        <input type="radio" name="insurance" value="need-more-info">
+                        <span class="radio-custom"></span>
+                        Need more info
+                    </label>
+                </div>
+                <details class="know-more">
+                    <summary>Know more</summary>
+                    <div class="details-content">
+                        <p>Insurance coverage and negotiation:</p>
+                        <ul>
+                            <li><strong>Third party liability:</strong> Coverage for external damages and incidents</li>
+                            <li><strong>Equipment:</strong> Protecting our own hardware and assets</li>
+                            <li><strong>Flight team:</strong> Coverage for crew and operations personnel</li>
+                            <li><strong>Customers:</strong> Passenger insurance and liability</li>
+                            <li>Negotiating competitive premiums across all categories</li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Topic 27: Pilots -->
+            <div class="topic">
+                <h3>27. Pilots</h3>
+                <div class="options">
+                    <label class="radio-label yes-option">
+                        <input type="radio" name="pilots" value="yes" required>
+                        <span class="radio-custom"></span>
+                        Yes
+                    </label>
+                    <label class="radio-label no-option">
+                        <input type="radio" name="pilots" value="no">
+                        <span class="radio-custom"></span>
+                        No
+                    </label>
+                    <label class="radio-label info-option">
+                        <input type="radio" name="pilots" value="need-more-info">
+                        <span class="radio-custom"></span>
+                        Need more info
+                    </label>
+                </div>
+                <details class="know-more">
+                    <summary>Know more</summary>
+                    <div class="details-content">
+                        <p>Pilot engagement and knowledge transfer:</p>
+                        <ul>
+                            <li><strong>Learning from them:</strong> Gathering operational insights and expertise</li>
+                            <li><strong>Flying our ideas:</strong> Getting pilots to test and validate concepts</li>
+                            <li><strong>Future customers:</strong> Training pilots who will fly our customers</li>
+                            <li>Building relationships with experienced aviators</li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Topic 28: IT & Knowledge Management -->
+            <div class="topic">
+                <h3>28. IT & Knowledge Management</h3>
+                <div class="options">
+                    <label class="radio-label yes-option">
+                        <input type="radio" name="it-knowledge" value="yes" required>
+                        <span class="radio-custom"></span>
+                        Yes
+                    </label>
+                    <label class="radio-label no-option">
+                        <input type="radio" name="it-knowledge" value="no">
+                        <span class="radio-custom"></span>
+                        No
+                    </label>
+                    <label class="radio-label info-option">
+                        <input type="radio" name="it-knowledge" value="need-more-info">
+                        <span class="radio-custom"></span>
+                        Need more info
+                    </label>
+                </div>
+                <details class="know-more">
+                    <summary>Know more</summary>
+                    <div class="details-content">
+                        <p>Information systems and organizational knowledge:</p>
+                        <ul>
+                            <li><strong>Know-how retention:</strong> Capturing and preserving institutional knowledge</li>
+                            <li><strong>Scalability:</strong> Systems that grow without creating bottlenecks</li>
+                            <li><strong>Documentation:</strong> Ensuring processes and decisions are recorded</li>
+                            <li>Enabling the company to scale efficiently</li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Topic 29: Regulatory & Certification -->
+            <div class="topic">
+                <h3>29. Regulatory & Certification</h3>
+                <div class="options">
+                    <label class="radio-label yes-option">
+                        <input type="radio" name="regulatory" value="yes" required>
+                        <span class="radio-custom"></span>
+                        Yes
+                    </label>
+                    <label class="radio-label no-option">
+                        <input type="radio" name="regulatory" value="no">
+                        <span class="radio-custom"></span>
+                        No
+                    </label>
+                    <label class="radio-label info-option">
+                        <input type="radio" name="regulatory" value="need-more-info">
+                        <span class="radio-custom"></span>
+                        Need more info
+                    </label>
+                </div>
+                <details class="know-more">
+                    <summary>Know more</summary>
+                    <div class="details-content">
+                        <p>Aviation authority approvals and compliance:</p>
+                        <ul>
+                            <li><strong>FAA/EASA:</strong> Navigating certification requirements</li>
+                            <li><strong>Airworthiness:</strong> Demonstrating vehicle safety and reliability</li>
+                            <li><strong>Flight permits:</strong> Obtaining operational authorizations</li>
+                            <li><strong>Operational approvals:</strong> Meeting all regulatory requirements for commercial flights</li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Topic 30: Safety Case & Hazard Analysis -->
+            <div class="topic">
+                <h3>30. Safety Case & Hazard Analysis</h3>
+                <div class="options">
+                    <label class="radio-label yes-option">
+                        <input type="radio" name="safety-case" value="yes" required>
+                        <span class="radio-custom"></span>
+                        Yes
+                    </label>
+                    <label class="radio-label no-option">
+                        <input type="radio" name="safety-case" value="no">
+                        <span class="radio-custom"></span>
+                        No
+                    </label>
+                    <label class="radio-label info-option">
+                        <input type="radio" name="safety-case" value="need-more-info">
+                        <span class="radio-custom"></span>
+                        Need more info
+                    </label>
+                </div>
+                <details class="know-more">
+                    <summary>Know more</summary>
+                    <div class="details-content">
+                        <p>Systematic safety documentation:</p>
+                        <ul>
+                            <li><strong>FMEA:</strong> Failure Mode and Effects Analysis</li>
+                            <li><strong>Fault trees:</strong> Systematic failure path analysis</li>
+                            <li><strong>Safety documentation:</strong> Building the case for certification</li>
+                            <li>Identifying and mitigating all potential hazards</li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Topic 31: Abort Modes -->
+            <div class="topic">
+                <h3>31. Abort Modes</h3>
+                <div class="options">
+                    <label class="radio-label yes-option">
+                        <input type="radio" name="abort-modes" value="yes" required>
+                        <span class="radio-custom"></span>
+                        Yes
+                    </label>
+                    <label class="radio-label no-option">
+                        <input type="radio" name="abort-modes" value="no">
+                        <span class="radio-custom"></span>
+                        No
+                    </label>
+                    <label class="radio-label info-option">
+                        <input type="radio" name="abort-modes" value="need-more-info">
+                        <span class="radio-custom"></span>
+                        Need more info
+                    </label>
+                </div>
+                <details class="know-more">
+                    <summary>Know more</summary>
+                    <div class="details-content">
+                        <p>Emergency procedures at each flight phase:</p>
+                        <ul>
+                            <li><strong>Pre-launch abort:</strong> Ground abort procedures</li>
+                            <li><strong>Ascent abort:</strong> Emergency descent during climb</li>
+                            <li><strong>Float abort:</strong> Contingencies at altitude</li>
+                            <li><strong>Descent abort:</strong> Recovery from descent anomalies</li>
+                            <li>Defined decision criteria and crew actions for each scenario</li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Topic 32: Comms System -->
+            <div class="topic">
+                <h3>32. Comms System</h3>
+                <div class="options">
+                    <label class="radio-label yes-option">
+                        <input type="radio" name="comms" value="yes" required>
+                        <span class="radio-custom"></span>
+                        Yes
+                    </label>
+                    <label class="radio-label no-option">
+                        <input type="radio" name="comms" value="no">
+                        <span class="radio-custom"></span>
+                        No
+                    </label>
+                    <label class="radio-label info-option">
+                        <input type="radio" name="comms" value="need-more-info">
+                        <span class="radio-custom"></span>
+                        Need more info
+                    </label>
+                </div>
+                <details class="know-more">
+                    <summary>Know more</summary>
+                    <div class="details-content">
+                        <p>Communications and data links:</p>
+                        <ul>
+                            <li><strong>Ground-to-capsule:</strong> Voice and data uplink/downlink</li>
+                            <li><strong>Telemetry:</strong> Real-time vehicle health data</li>
+                            <li><strong>Voice comms:</strong> Crew-ground communication system</li>
+                            <li><strong>Video downlink:</strong> Live imagery from capsule</li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Topic 33: Tracking & ADS-B -->
+            <div class="topic">
+                <h3>33. Tracking & ADS-B</h3>
+                <div class="options">
+                    <label class="radio-label yes-option">
+                        <input type="radio" name="tracking" value="yes" required>
+                        <span class="radio-custom"></span>
+                        Yes
+                    </label>
+                    <label class="radio-label no-option">
+                        <input type="radio" name="tracking" value="no">
+                        <span class="radio-custom"></span>
+                        No
+                    </label>
+                    <label class="radio-label info-option">
+                        <input type="radio" name="tracking" value="need-more-info">
+                        <span class="radio-custom"></span>
+                        Need more info
+                    </label>
+                </div>
+                <details class="know-more">
+                    <summary>Know more</summary>
+                    <div class="details-content">
+                        <p>Position tracking and transponders:</p>
+                        <ul>
+                            <li><strong>ADS-B:</strong> Automatic Dependent Surveillance-Broadcast</li>
+                            <li><strong>Transponders:</strong> Air traffic control visibility</li>
+                            <li><strong>Flight following:</strong> Continuous position monitoring</li>
+                            <li><strong>Recovery tracking:</strong> Locating capsule after landing</li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Topic 34: Pressure Vessel / Capsule Shell -->
+            <div class="topic">
+                <h3>34. Pressure Vessel / Capsule Shell</h3>
+                <div class="options">
+                    <label class="radio-label yes-option">
+                        <input type="radio" name="pressure-vessel" value="yes" required>
+                        <span class="radio-custom"></span>
+                        Yes
+                    </label>
+                    <label class="radio-label no-option">
+                        <input type="radio" name="pressure-vessel" value="no">
+                        <span class="radio-custom"></span>
+                        No
+                    </label>
+                    <label class="radio-label info-option">
+                        <input type="radio" name="pressure-vessel" value="need-more-info">
+                        <span class="radio-custom"></span>
+                        Need more info
+                    </label>
+                </div>
+                <details class="know-more">
+                    <summary>Know more</summary>
+                    <div class="details-content">
+                        <p>Hull fabrication and construction:</p>
+                        <ul>
+                            <li><strong>Materials:</strong> Selection of hull materials (aluminum, composites)</li>
+                            <li><strong>Fabrication:</strong> Manufacturing processes and suppliers</li>
+                            <li><strong>Welds/joints:</strong> Structural integrity of connections</li>
+                            <li><strong>Testing:</strong> Pressure testing and qualification</li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Topic 35: Structural Analysis -->
+            <div class="topic">
+                <h3>35. Structural Analysis</h3>
+                <div class="options">
+                    <label class="radio-label yes-option">
+                        <input type="radio" name="structural" value="yes" required>
+                        <span class="radio-custom"></span>
+                        Yes
+                    </label>
+                    <label class="radio-label no-option">
+                        <input type="radio" name="structural" value="no">
+                        <span class="radio-custom"></span>
+                        No
+                    </label>
+                    <label class="radio-label info-option">
+                        <input type="radio" name="structural" value="need-more-info">
+                        <span class="radio-custom"></span>
+                        Need more info
+                    </label>
+                </div>
+                <details class="know-more">
+                    <summary>Know more</summary>
+                    <div class="details-content">
+                        <p>Engineering analysis and verification:</p>
+                        <ul>
+                            <li><strong>FEA:</strong> Finite Element Analysis for stress/strain</li>
+                            <li><strong>Loads analysis:</strong> Flight and landing load cases</li>
+                            <li><strong>Fatigue:</strong> Cyclic loading and life assessment</li>
+                            <li><strong>Pressure cycling:</strong> Repeated pressurization effects</li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Topic 36: Mission Control / Ground Segment -->
+            <div class="topic">
+                <h3>36. Mission Control / Ground Segment</h3>
+                <div class="options">
+                    <label class="radio-label yes-option">
+                        <input type="radio" name="mission-control" value="yes" required>
+                        <span class="radio-custom"></span>
+                        Yes
+                    </label>
+                    <label class="radio-label no-option">
+                        <input type="radio" name="mission-control" value="no">
+                        <span class="radio-custom"></span>
+                        No
+                    </label>
+                    <label class="radio-label info-option">
+                        <input type="radio" name="mission-control" value="need-more-info">
+                        <span class="radio-custom"></span>
+                        Need more info
+                    </label>
+                </div>
+                <details class="know-more">
+                    <summary>Know more</summary>
+                    <div class="details-content">
+                        <p>Operations center setup:</p>
+                        <ul>
+                            <li><strong>Ops center:</strong> Physical facility and equipment</li>
+                            <li><strong>Consoles:</strong> Monitoring stations and displays</li>
+                            <li><strong>Procedures:</strong> Standard and contingency procedures</li>
+                            <li><strong>Team training:</strong> Ground crew certification and drills</li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Topic 37: Flight Planning & Simulation -->
+            <div class="topic">
+                <h3>37. Flight Planning & Simulation</h3>
+                <div class="options">
+                    <label class="radio-label yes-option">
+                        <input type="radio" name="flight-planning" value="yes" required>
+                        <span class="radio-custom"></span>
+                        Yes
+                    </label>
+                    <label class="radio-label no-option">
+                        <input type="radio" name="flight-planning" value="no">
+                        <span class="radio-custom"></span>
+                        No
+                    </label>
+                    <label class="radio-label info-option">
+                        <input type="radio" name="flight-planning" value="need-more-info">
+                        <span class="radio-custom"></span>
+                        Need more info
+                    </label>
+                </div>
+                <details class="know-more">
+                    <summary>Know more</summary>
+                    <div class="details-content">
+                        <p>Mission planning and rehearsal:</p>
+                        <ul>
+                            <li><strong>Mission timeline:</strong> Detailed flight profile planning</li>
+                            <li><strong>Contingencies:</strong> What-if scenario planning</li>
+                            <li><strong>Simulations:</strong> Software-based mission rehearsals</li>
+                            <li><strong>Go/No-go criteria:</strong> Launch decision parameters</li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Topic 38: Crew Training -->
+            <div class="topic">
+                <h3>38. Crew Training</h3>
+                <div class="options">
+                    <label class="radio-label yes-option">
+                        <input type="radio" name="crew-training" value="yes" required>
+                        <span class="radio-custom"></span>
+                        Yes
+                    </label>
+                    <label class="radio-label no-option">
+                        <input type="radio" name="crew-training" value="no">
+                        <span class="radio-custom"></span>
+                        No
+                    </label>
+                    <label class="radio-label info-option">
+                        <input type="radio" name="crew-training" value="need-more-info">
+                        <span class="radio-custom"></span>
+                        Need more info
+                    </label>
+                </div>
+                <details class="know-more">
+                    <summary>Know more</summary>
+                    <div class="details-content">
+                        <p>Crew preparation program:</p>
+                        <ul>
+                            <li><strong>Procedures:</strong> Normal and emergency procedure training</li>
+                            <li><strong>Emergency drills:</strong> Practiced responses to failures</li>
+                            <li><strong>Suited operations:</strong> Working in pressure suits</li>
+                            <li><strong>Egress training:</strong> Emergency exit procedures</li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Topic 39: Customer Experience -->
+            <div class="topic">
+                <h3>39. Customer Experience</h3>
+                <div class="options">
+                    <label class="radio-label yes-option">
+                        <input type="radio" name="customer-experience" value="yes" required>
+                        <span class="radio-custom"></span>
+                        Yes
+                    </label>
+                    <label class="radio-label no-option">
+                        <input type="radio" name="customer-experience" value="no">
+                        <span class="radio-custom"></span>
+                        No
+                    </label>
+                    <label class="radio-label info-option">
+                        <input type="radio" name="customer-experience" value="need-more-info">
+                        <span class="radio-custom"></span>
+                        Need more info
+                    </label>
+                </div>
+                <details class="know-more">
+                    <summary>Know more</summary>
+                    <div class="details-content">
+                        <p>Passenger journey design:</p>
+                        <ul>
+                            <li><strong>Pre-flight:</strong> Briefings, preparation, anticipation building</li>
+                            <li><strong>In-flight:</strong> What passengers see, do, and experience</li>
+                            <li><strong>Interior design:</strong> Aesthetics and comfort for tourism</li>
+                            <li><strong>Post-flight:</strong> Celebration, media, memorabilia</li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Topic 40: Fire Detection & Suppression -->
+            <div class="topic">
+                <h3>40. Fire Detection & Suppression</h3>
+                <div class="options">
+                    <label class="radio-label yes-option">
+                        <input type="radio" name="fire-system" value="yes" required>
+                        <span class="radio-custom"></span>
+                        Yes
+                    </label>
+                    <label class="radio-label no-option">
+                        <input type="radio" name="fire-system" value="no">
+                        <span class="radio-custom"></span>
+                        No
+                    </label>
+                    <label class="radio-label info-option">
+                        <input type="radio" name="fire-system" value="need-more-info">
+                        <span class="radio-custom"></span>
+                        Need more info
+                    </label>
+                </div>
+                <details class="know-more">
+                    <summary>Know more</summary>
+                    <div class="details-content">
+                        <p>Fire safety systems:</p>
+                        <ul>
+                            <li><strong>Detection:</strong> Smoke and fire sensors</li>
+                            <li><strong>Suppression:</strong> Extinguishing systems (inert gas, foam)</li>
+                            <li><strong>Crew response:</strong> Portable extinguishers and procedures</li>
+                            <li>Critical for pressurized, oxygen-enriched environments</li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Topic 41: Lighting -->
+            <div class="topic">
+                <h3>41. Lighting</h3>
+                <div class="options">
+                    <label class="radio-label yes-option">
+                        <input type="radio" name="lighting" value="yes" required>
+                        <span class="radio-custom"></span>
+                        Yes
+                    </label>
+                    <label class="radio-label no-option">
+                        <input type="radio" name="lighting" value="no">
+                        <span class="radio-custom"></span>
+                        No
+                    </label>
+                    <label class="radio-label info-option">
+                        <input type="radio" name="lighting" value="need-more-info">
+                        <span class="radio-custom"></span>
+                        Need more info
+                    </label>
+                </div>
+                <details class="know-more">
+                    <summary>Know more</summary>
+                    <div class="details-content">
+                        <p>Interior and exterior lighting:</p>
+                        <ul>
+                            <li><strong>Interior:</strong> Cabin illumination, instrument lighting</li>
+                            <li><strong>Exterior:</strong> Position lights, strobes for visibility</li>
+                            <li><strong>Emergency:</strong> Backup lighting for power loss</li>
+                            <li><strong>Ambiance:</strong> Mood lighting for passenger experience</li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Topic 42: Ballast System -->
+            <div class="topic">
+                <h3>42. Ballast System</h3>
+                <div class="options">
+                    <label class="radio-label yes-option">
+                        <input type="radio" name="ballast" value="yes" required>
+                        <span class="radio-custom"></span>
+                        Yes
+                    </label>
+                    <label class="radio-label no-option">
+                        <input type="radio" name="ballast" value="no">
+                        <span class="radio-custom"></span>
+                        No
+                    </label>
+                    <label class="radio-label info-option">
+                        <input type="radio" name="ballast" value="need-more-info">
+                        <span class="radio-custom"></span>
+                        Need more info
+                    </label>
+                </div>
+                <details class="know-more">
+                    <summary>Know more</summary>
+                    <div class="details-content">
+                        <p>Altitude control via ballast:</p>
+                        <ul>
+                            <li><strong>Ballast type:</strong> Sand, water, or other droppable mass</li>
+                            <li><strong>Release mechanism:</strong> Controlled ballast drop system</li>
+                            <li><strong>Quantity:</strong> How much ballast for mission profile</li>
+                            <li>Alternative/complement to gas venting for altitude control</li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Feedback -->
+            <div class="input-group">
+                <label for="comments">Additional comments or feedback (optional):</label>
+                <textarea id="comments" name="comments" rows="3" placeholder="Any additional feedback..."></textarea>
+            </div>
+
+            <button type="submit" class="submit-btn">Submit Survey</button>
+        </form>
+    </div>
+</body>
+</html>
